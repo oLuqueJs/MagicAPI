@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CardModule } from './modules/card/card.module';
 import { CommanderModule } from './modules/commander/commander.module';
 import { DeckModule } from './modules/deck/deck.module';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -12,8 +12,9 @@ import { AuthModule } from './auth/auth.module';
     CardModule,
     CommanderModule,
     DeckModule,
-    UserModule,
+    UsersModule,
     AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule { }
