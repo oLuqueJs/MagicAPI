@@ -1,0 +1,1 @@
+//# sourceMappingURL=scryfall-api.js.map

@@ -7,6 +7,7 @@ export const swaggerConfig = new DocumentBuilder()
     .addTag('cards', 'Gerenciamento de cartas de Magic: The Gathering')
     .addTag('commanders', 'Gerenciamento de comandantes')
     .addTag('decks', 'Gerenciamento de decks')
+    .addTag('User', 'Gerenciamento de Usuario')
     .build();
 
 export const swaggerCustomOptions: SwaggerCustomOptions = {
