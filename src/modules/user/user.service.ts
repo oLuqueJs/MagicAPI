@@ -1,41 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from './interfaces/user.interface';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'Otavio',
-      password: 'plantacorrente29',
-      role: 'admin',
-    },
-    {
-      userId: 2,
-      username: 'Juninho',
-      password: 'abelhaturbinada88',
-      role: 'user',
-    },
-    {
-      userId: 3,
-      username: 'Pedrinho',
-      password: 'rodacerveja15',
-      role: 'user',
-    },
-  ];
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
-  // Busca todos os usuários
+  // Register
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = new this.userModel({
+      userId: await this.userModel.countDocuments() + 1,
+      ...createUserDto,
+      role: createUserDto.role || 'user',
+    });
+    return newUser.save();
+  }
+
   async findAll(): Promise<User[]> {
-    return this.users;
+    return this.userModel.find().exec();
   }
 
-  // Busca um usuário pelo ID
   async findById(id: string): Promise<User | undefined> {
-    return this.users.find(user => user.userId === parseInt(id));
+    return this.userModel.findOne({ userId: parseInt(id) }).exec();
   }
 
-  // Busca um usuário pelo nome de usuário (para login)
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+    return this.userModel.findOne({ username }).exec();
   }
 }
