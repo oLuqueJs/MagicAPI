@@ -44,4 +44,12 @@ export class DeckController {
     async saveDeckAsJson(@Param('id') id: string) {
         return this.deckService.saveDeckAsJson(id);
     }
+
+    @Get('player/:playerId')
+    @ApiParam({ name: 'playerId', description: 'ID do jogador' })
+    @ApiOperation({ summary: 'Listar todos os decks de um jogador específico' })
+    @ApiResponse({ status: 200, description: 'Lista de decks do jogador retornada com sucesso.' })
+    async getDecksByPlayer(@Param('playerId') playerId: string) {
+        return this.deckService.getDecksByPlayer(playerId);
+    }
 }
