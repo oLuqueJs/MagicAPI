@@ -46,6 +46,10 @@ export class DeckService {
         return this.deckModel.find().exec();
     }
 
+    async getDecksByPlayer(playerId: string) {
+        return this.deckModel.find({ playerId }).exec();
+    }
+
     async deleteDeck(id: string) {
         const result = await this.deckModel.findByIdAndDelete(id).exec();
         if (!result) {
