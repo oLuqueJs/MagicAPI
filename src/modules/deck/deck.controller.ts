@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Param, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { DeckService } from './deck.service';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @ApiTags('decks')
 @Controller('decks')
@@ -20,6 +21,13 @@ export class DeckController {
     @ApiResponse({ status: 200, description: 'Lista de todos os decks criados.' })
     async getAllDecks() {
         return this.deckService.getAllDecks();
+    }
+
+    @Get()
+    @CacheKey('deck-list')
+    @CacheTTL(60) // Cache por 60 segundos
+    async getDeckList() {
+        return await this.deckService.getAllDecks();
     }
 
     @Delete(':id')

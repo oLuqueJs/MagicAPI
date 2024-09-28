@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './modules/user/roles/roles.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/user/user.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ import { UsersModule } from './modules/user/user.module';
     DeckModule,
     UsersModule,
     AuthModule,
+    CacheModule.register({
+      ttl: 10,
+      max: 100,
+    }),
   ],
 })
 export class AppModule { }
