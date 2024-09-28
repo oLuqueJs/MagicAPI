@@ -43,7 +43,17 @@ export class DeckService {
     }
 
     async getAllDecks() {
-        return this.deckModel.find().exec();
+        const cacheKey = 'all-decks';
+        const cachedDecks = await this.redis.get(cacheKey);
+
+        if (cachedDecks) {
+            return JSON.parse(cachedDecks);
+        }
+
+        const decks = await this.deckModel.find().exec();
+        await this.redis.set(cacheKey, JSON.stringify(decks), 'EX', 3600); // Cache por 1 hora
+
+        return decks;
     }
 
     async deleteDeck(id: string) {
@@ -51,6 +61,8 @@ export class DeckService {
         if (!result) {
             throw new NotFoundException('Deck não encontrado.');
         }
+        // Invalida o cache
+        await this.redis.del('all-decks');
         return result;
     }
 
